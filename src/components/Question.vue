@@ -1,19 +1,17 @@
 <template>
-  <div class="hello">
-    <h1>leetcode</h1>
-    <ul v-for="question in questions">
-      <li>{{question.ques_id}}. <router-link :to="{name:'question', params:{id:question.ques_id}}">{{question.ques_title}}</router-link> {{question.passrate}} {{question.difficulty}}</li>
-    </ul>
+  <div class="question">
+    <h1>{{question.ques_title}}</h1>
+    <div v-html="question.ques_content"></div>
   </div>
 </template>
 
 <script>
 import {url} from '../constant.js'
 export default {
-  name: 'hello',
+  name: 'question',
   data () {
     return {
-      questions: []
+      question: {}
     }
   },
   created() {
@@ -21,8 +19,8 @@ export default {
   },
   methods: {
     fetchData: function() {
-      this.$http.get(url).then(response=>{
-        this.questions = response.body.data
+      this.$http.get(url+'leetcode-question/'+this.$route.params.id).then(response=>{
+        this.question = response.body.data
         // console.log(response.body.data[0])
       })
     }
